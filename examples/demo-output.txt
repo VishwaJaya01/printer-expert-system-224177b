@@ -1,0 +1,170 @@
+
+CASE: Offline printer on a different Wi-Fi network
+  obs(symptom,offline)
+  obs(connection,wifi)
+  obs(printer_on,yes)
+  obs(same_network,no)
+  obs(restarted,yes)
+  obs(intended_default,yes)
+
+RECOMMENDATIONS (alphabetical, not a probability ranking)
+
+join_same_wifi
+  Connect the computer and printer to the same Wi-Fi network.
+  Rule r31 [knowledge_base] establishes recommend(join_same_wifi)
+    Rule r04 [s03] establishes finding(wifi_mismatch)
+      Observed: obs(connection,wifi)
+      Observed: obs(same_network,no)
+    Fact f04 [s03]: remedy(wifi_mismatch,join_same_wifi)
+  Source: https://support.microsoft.com/en-us/windows/hardware/printer/troubleshooting-offline-printer-problems-in-windows
+
+FORWARD RULE TRACE
+1. r04: [obs(connection,wifi),obs(same_network,no)] -> finding(wifi_mismatch)
+2. r31: [finding(wifi_mismatch),remedy(wifi_mismatch,join_same_wifi)] -> recommend(join_same_wifi)
+2 rule applications. No further conclusions can be added.
+
+CASE: Queue remains stuck after cancellation
+  obs(symptom,stuck_queue)
+  obs(cancel_attempted,yes)
+  obs(queue_cleared,no)
+  obs(spooler_running,no)
+
+RECOMMENDATIONS (alphabetical, not a probability ranking)
+
+manual_queue_clear
+  Follow the linked stop-spooler, clear-spool-folder, start-spooler procedure. It removes queued jobs; administrator help may be needed.
+  Rule r31 [knowledge_base] establishes recommend(manual_queue_clear)
+    Rule r10 [s04] establishes finding(queue_cancel_failed)
+      Observed: obs(symptom,stuck_queue)
+      Observed: obs(cancel_attempted,yes)
+      Observed: obs(queue_cleared,no)
+    Fact f10 [s04]: remedy(queue_cancel_failed,manual_queue_clear)
+  Source: https://support.microsoft.com/en-us/windows/hardware/printer/fix-print-job-stuck-in-queue-errors-in-windows
+
+restart_spooler
+  Open Services and restart Print Spooler; request administrator help if access is denied.
+  Rule r31 [knowledge_base] establishes recommend(restart_spooler)
+    Rule r11 [s05] establishes finding(spooler_stopped)
+      Observed: obs(spooler_running,no)
+    Fact f11 [s05]: remedy(spooler_stopped,restart_spooler)
+  Source: https://support.microsoft.com/en-us/windows/hardware/printer/fix-print-spooler-service-not-running-errors-in-windows
+
+FORWARD RULE TRACE
+1. r10: [obs(symptom,stuck_queue),obs(cancel_attempted,yes),obs(queue_cleared,no)] -> finding(queue_cancel_failed)
+2. r11: [obs(spooler_running,no)] -> finding(spooler_stopped)
+3. r31: [finding(queue_cancel_failed),remedy(queue_cancel_failed,manual_queue_clear)] -> recommend(manual_queue_clear)
+4. r31: [finding(spooler_stopped),remedy(spooler_stopped,restart_spooler)] -> recommend(restart_spooler)
+4 rule applications. No further conclusions can be added.
+
+CASE: Poor internal test page on an inkjet printer
+  obs(symptom,poor_quality)
+  obs(printer_type,inkjet)
+  obs(internal_test,poor)
+  obs(cartridge_empty,no)
+
+RECOMMENDATIONS (alphabetical, not a probability ranking)
+
+clean_align
+  Use the inkjet maintenance utility to clean or align the printhead; repeat only when necessary.
+  Rule r31 [knowledge_base] establishes recommend(clean_align)
+    Rule r22 [s08] establishes finding(inkjet_maintenance)
+      Observed: obs(symptom,poor_quality)
+      Observed: obs(internal_test,poor)
+      Observed: obs(printer_type,inkjet)
+    Fact f22 [s08]: remedy(inkjet_maintenance,clean_align)
+  Source: https://support.microsoft.com/en-us/windows/hardware/printer/fix-poor-print-quality-in-windows-blurry-faded-or-streaked-prints
+
+hardware_care
+  Investigate printer maintenance or service because its own test page is poor.
+  Rule r31 [knowledge_base] establishes recommend(hardware_care)
+    Rule r20 [s08] establishes finding(hardware_quality)
+      Observed: obs(symptom,poor_quality)
+      Observed: obs(internal_test,poor)
+    Fact f20 [s08]: remedy(hardware_quality,hardware_care)
+  Source: https://support.microsoft.com/en-us/windows/hardware/printer/fix-poor-print-quality-in-windows-blurry-faded-or-streaked-prints
+
+FORWARD RULE TRACE
+1. r20: [obs(symptom,poor_quality),obs(internal_test,poor)] -> finding(hardware_quality)
+2. r22: [obs(symptom,poor_quality),obs(internal_test,poor),obs(printer_type,inkjet)] -> finding(inkjet_maintenance)
+3. r31: [finding(hardware_quality),remedy(hardware_quality,hardware_care)] -> recommend(hardware_care)
+4. r31: [finding(inkjet_maintenance),remedy(inkjet_maintenance,clean_align)] -> recommend(clean_align)
+4 rule applications. No further conclusions can be added.
+
+CASE: Slow wireless printing of a large high-quality job
+  obs(symptom,slow)
+  obs(connection,wifi)
+  obs(quality_high,yes)
+  obs(large_job,yes)
+  obs(firmware_available,no)
+
+RECOMMENDATIONS (alphabetical, not a probability ranking)
+
+reduce_quality
+  Choose an appropriate standard quality setting when maximum quality is unnecessary.
+  Rule r31 [knowledge_base] establishes recommend(reduce_quality)
+    Rule r15 [s07] establishes finding(excess_quality)
+      Observed: obs(symptom,slow)
+      Observed: obs(quality_high,yes)
+    Fact f15 [s07]: remedy(excess_quality,reduce_quality)
+  Source: https://support.microsoft.com/en-us/windows/hardware/printer/troubleshoot-slow-printing-issues-in-windows
+
+simplify_job
+  Reduce image size or simplify the document and compare printing speed.
+  Rule r31 [knowledge_base] establishes recommend(simplify_job)
+    Rule r17 [s07] establishes finding(complex_job)
+      Observed: obs(symptom,slow)
+      Observed: obs(large_job,yes)
+    Fact f17 [s07]: remedy(complex_job,simplify_job)
+  Source: https://support.microsoft.com/en-us/windows/hardware/printer/troubleshoot-slow-printing-issues-in-windows
+
+try_wired
+  Temporarily compare printing through USB or Ethernet to check for network delay.
+  Rule r31 [knowledge_base] establishes recommend(try_wired)
+    Rule r16 [s07] establishes finding(wireless_speed_check)
+      Observed: obs(symptom,slow)
+      Observed: obs(connection,wifi)
+    Fact f16 [s07]: remedy(wireless_speed_check,try_wired)
+  Source: https://support.microsoft.com/en-us/windows/hardware/printer/troubleshoot-slow-printing-issues-in-windows
+
+FORWARD RULE TRACE
+1. r15: [obs(symptom,slow),obs(quality_high,yes)] -> finding(excess_quality)
+2. r16: [obs(symptom,slow),obs(connection,wifi)] -> finding(wireless_speed_check)
+3. r17: [obs(symptom,slow),obs(large_job,yes)] -> finding(complex_job)
+4. r31: [finding(excess_quality),remedy(excess_quality,reduce_quality)] -> recommend(reduce_quality)
+5. r31: [finding(wireless_speed_check),remedy(wireless_speed_check,try_wired)] -> recommend(try_wired)
+6. r31: [finding(complex_job),remedy(complex_job,simplify_job)] -> recommend(simplify_job)
+6 rule applications. No further conclusions can be added.
+
+CASE: Printing failed after a driver update
+  obs(symptom,driver_issue)
+  obs(after_update,yes)
+  obs(rollback_available,yes)
+  obs(windows_driver_found,yes)
+
+RECOMMENDATIONS (alphabetical, not a probability ranking)
+
+rollback_driver
+  Use Roll Back Driver if available, then restart the computer and retest.
+  Rule r31 [knowledge_base] establishes recommend(rollback_driver)
+    Rule r27 [s10] establishes finding(update_regression)
+      Observed: obs(symptom,driver_issue)
+      Observed: obs(after_update,yes)
+      Observed: obs(rollback_available,yes)
+    Fact f27 [s10]: remedy(update_regression,rollback_driver)
+  Source: https://support.microsoft.com/en-us/windows/hardware/printer/fix-printer-driver-compatibility-issues-in-windows
+
+FORWARD RULE TRACE
+1. r27: [obs(symptom,driver_issue),obs(after_update,yes),obs(rollback_available,yes)] -> finding(update_regression)
+2. r31: [finding(update_regression),remedy(update_regression,rollback_driver)] -> recommend(rollback_driver)
+2 rule applications. No further conclusions can be added.
+
+CASE: Insufficient information
+  obs(symptom,unknown)
+  obs(connection,unknown)
+  obs(printer_on,unknown)
+
+RECOMMENDATIONS (alphabetical, not a probability ranking)
+No supported recommendation. More observations are needed, or the case is outside the stored rules.
+
+FORWARD RULE TRACE
+0 rule applications. No further conclusions can be added.

@@ -1,0 +1,126 @@
+
+PRINTER EXPERT - Windows 11 troubleshooting
+P. K. V. J. Senarathna | 224177B
+Advice only. No printer settings or files are changed.
+Use unknown when you have not checked something.
+
+1. New consultation
+2. Load demonstration case
+3. Forward chaining: recommendations and rule trace
+4. Backward chaining: check a recommendation
+5. View current observations
+6. View sources
+7. Reset consultation
+0. Exit
+Choice: 1. Offline printer on a different Wi-Fi network
+2. Queue remains stuck after cancellation
+3. Poor internal test page on an inkjet printer
+4. Slow wireless printing of a large high-quality job
+5. Printing failed after a driver update
+6. Insufficient information
+Number (0 = back): Consultation saved. Choose 3 for results or 4 to test a goal.
+
+1. New consultation
+2. Load demonstration case
+3. Forward chaining: recommendations and rule trace
+4. Backward chaining: check a recommendation
+5. View current observations
+6. View sources
+7. Reset consultation
+0. Exit
+Choice: 
+RECOMMENDATIONS (alphabetical, not a probability ranking)
+
+join_same_wifi
+  Connect the computer and printer to the same Wi-Fi network.
+  Rule r31 [knowledge_base] establishes recommend(join_same_wifi)
+    Rule r04 [s03] establishes finding(wifi_mismatch)
+      Observed: obs(connection,wifi)
+      Observed: obs(same_network,no)
+    Fact f04 [s03]: remedy(wifi_mismatch,join_same_wifi)
+  Source: https://support.microsoft.com/en-us/windows/hardware/printer/troubleshooting-offline-printer-problems-in-windows
+
+FORWARD RULE TRACE
+1. r04: [obs(connection,wifi),obs(same_network,no)] -> finding(wifi_mismatch)
+2. r31: [finding(wifi_mismatch),remedy(wifi_mismatch,join_same_wifi)] -> recommend(join_same_wifi)
+2 rule applications. No further conclusions can be added.
+
+1. New consultation
+2. Load demonstration case
+3. Forward chaining: recommendations and rule trace
+4. Backward chaining: check a recommendation
+5. View current observations
+6. View sources
+7. Reset consultation
+0. Exit
+Choice: 1. power_on
+2. secure_usb
+3. try_usb_port
+4. join_same_wifi
+5. enable_bluetooth
+6. move_closer
+7. power_cycle
+8. set_default
+9. cancel_jobs
+10. manual_queue_clear
+11. restart_spooler
+12. review_drivers
+13. clear_jam
+14. reload_paper
+15. reduce_quality
+16. try_wired
+17. simplify_job
+18. update_firmware
+19. replace_consumable
+20. hardware_care
+21. normal_quality
+22. clean_align
+23. compare_apps
+24. select_printer
+25. physical_destination
+26. manufacturer_driver
+27. rollback_driver
+28. enable_share
+29. check_host_network
+30. valid_credentials
+Number (0 = back): SUPPORTED: join_same_wifi
+Rule r31 [knowledge_base] establishes recommend(join_same_wifi)
+  Rule r04 [s03] establishes finding(wifi_mismatch)
+    Observed: obs(connection,wifi)
+    Observed: obs(same_network,no)
+  Fact f04 [s03]: remedy(wifi_mismatch,join_same_wifi)
+
+1. New consultation
+2. Load demonstration case
+3. Forward chaining: recommendations and rule trace
+4. Backward chaining: check a recommendation
+5. View current observations
+6. View sources
+7. Reset consultation
+0. Exit
+Choice: Consultation saved. Choose 3 for results or 4 to test a goal.
+
+1. New consultation
+2. Load demonstration case
+3. Forward chaining: recommendations and rule trace
+4. Backward chaining: check a recommendation
+5. View current observations
+6. View sources
+7. Reset consultation
+0. Exit
+Choice: 
+RECOMMENDATIONS (alphabetical, not a probability ranking)
+No supported recommendation. More observations are needed, or the case is outside the stored rules.
+
+FORWARD RULE TRACE
+0 rule applications. No further conclusions can be added.
+
+1. New consultation
+2. Load demonstration case
+3. Forward chaining: recommendations and rule trace
+4. Backward chaining: check a recommendation
+5. View current observations
+6. View sources
+7. Reset consultation
+0. Exit
+Choice: Goodbye.

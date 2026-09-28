@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "checks": [
+    "fresh consultation and proof",
+    "unknown evidence",
+    "invalid answers and case folding",
+    "cancel action menu",
+    "end of input",
+    "Windows launcher with a spaced path and different working directory"
+  ]
+}
